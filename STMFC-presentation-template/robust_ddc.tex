@@ -157,7 +157,7 @@
 \section{Proposed Solution \& its Advantage}
 %---------------------------------------------------------
 \begin{frame}\frametitle{Proposed Solution}
-  To overcome the non-convexity of barrier functions, the proposed framework uses \textbf{Density Functions} $\rho(\mathbf{x})$ as an alternative safety certificate.
+  To overcome the non-convexity of barrier functions, the proposed framework uses \textbf{Density Functions} $\rho(\mathbf{x})$ as an alternative safety certificate, which was proposed in \cite{Rantzer2004}.
   
   \vspace{0.3cm}
   \textbf{Key Idea (Dual to Lyapunov/Barrier):}
@@ -204,13 +204,6 @@
     \item \textbf{Directly Data-Driven:} Sidesteps the need to identify the exact nonlinear model first, which is often highly sensitive to modeling errors.
     \item \textbf{Rational Controller:} The resulting state feedback law $\mathbf{u}(\mathbf{x}) = \frac{\mathbf{v}(\mathbf{x})}{\rho(\mathbf{x})}$ is a rational function, allowing for highly flexible and expressive control policies.
   \end{itemize}
-\end{frame}
-
-%---------------------------------------------------------
-\section{Implementation}
-%---------------------------------------------------------
-\begin{frame}\frametitle{Implementation}
-  Casos tool for controller and observer synthesis
 \end{frame}
 
 %---------------------------------------------------------
