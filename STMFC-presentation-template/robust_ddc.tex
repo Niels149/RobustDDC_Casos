@@ -35,6 +35,52 @@
 \section{Overview}
 %---------------------------------------------------------
 
+\begin{frame}\frametitle{Overview - Key Topics}
+  \begin{enumerate}
+    \item<1-> \textbf{Problem Statement:} Safe control design from experimental data
+    \item<2-> \textbf{Traditional Approach:} Barrier functions for safety certification
+    \item<3-> \textbf{Limitation:} Non-convex optimization, computational challenges
+    \item<4-> \textbf{Proposed Solution:} Density functions for data-driven control
+    \item<5-> \textbf{Key Advantage:} Convex reformulation using semidefinite programming (SDP)
+    \item<6-> \textbf{Implementation:} Casos tool for controller and observer synthesis
+    \item<7-> \textbf{Validation:} Experimental verification and performance analysis
+  \end{enumerate}
+\end{frame}
+
+%---------------------------------------------------------
+
+\begin{frame}\frametitle{Overview - Chapter Structure}
+  \begin{itemize}
+    \item<1-> \textbf{Chapter 1:} Introduction and Motivation
+      \begin{itemize}
+        \item<1-> Data-driven control design challenges
+        \item<1-> Safety constraints in control systems
+      \end{itemize}
+    \item<2-> \textbf{Chapter 2:} Mathematical Background
+      \begin{itemize}
+        \item<2-> Barrier functions and Lyapunov theory
+        \item<2-> Probability and density functions
+      \end{itemize}
+    \item<3-> \textbf{Chapter 3:} Proposed Methodology
+      \begin{itemize}
+        \item<3-> Density-based safety constraints
+        \item<3-> Convex optimization framework
+      \end{itemize}
+    \item<4-> \textbf{Chapter 4:} Algorithm and Implementation
+      \begin{itemize}
+        \item<4-> SDP formulation
+        \item<4-> Computational aspects
+      \end{itemize}
+    \item<5-> \textbf{Chapter 5:} Numerical Examples and Case Studies
+      \begin{itemize}
+        \item<5-> Simulation results
+        \item<5-> Comparison with traditional methods
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%---------------------------------------------------------
+
 \begin{frame}\frametitle{Overview}
   \tableofcontents
 \end{frame}
@@ -42,27 +88,51 @@
 %--------------------------------------------------------
 
 \begin{frame}\frametitle{Goal of the Paper}
-  Goal of the Paper:
-  designing safe ``instructions'' (control laws) for complex machines or robots using only recorded experimental data
-\end{frame}
-
-%--------------------------------------------------------
-
-\begin{frame}\frametitle{General Approach}
-  General Approach:
-  Typischerweise wird Sicherheit mit Barrierefunktionen zertifiziert.
-\end{frame}
-
-%--------------------------------------------------------
-
-\begin{frame}\frametitle{New Approach}
-  New Approach:
   \begin{itemize}
-    \item Anstatt Barriere-Funktionen, werden Dichtefunktionen benutzt
-    \item Führt zu einem konvexen Problem.
-    \item -> SDP
+    \item<1-> Design safe control laws for complex systems using only experimental data
+    \item<2-> Avoid need for accurate mathematical models
+    \item<3-> Guarantee safety constraints are satisfied
+    \item<4-> Achieve computational efficiency in the design process
   \end{itemize}
+\end{frame}
 
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{Traditional Approach: Barrier Functions}
+  \begin{itemize}
+    \item<1-> \textbf{Barrier Functions:} Mathematical tools to enforce safety constraints
+    \item<2-> Approach: Verify that trajectories stay within safe region
+    \item<3-> Challenge: Requires solving non-convex optimization problems
+    \item<4-> Limitation: Computationally expensive for high-dimensional systems
+    \item<5-> Dependency: Often requires explicit system models
+  \end{itemize}
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{Proposed Approach: Density Functions}
+  \begin{itemize}
+    \item<1-> \textbf{Key Idea:} Use probability density functions instead of barrier functions
+    \item<2-> \textbf{Advantage 1:} Leads to a \textit{convex optimization problem}
+    \item<3-> \textbf{Advantage 2:} Solvable via semidefinite programming (SDP)
+    \item<4-> \textbf{Advantage 3:} Data-driven: Works directly from experimental data
+    \item<5-> \textbf{Result:} Efficient, scalable solution for safe control design
+  \end{itemize}
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{Mathematical Framework}
+  \begin{itemize}
+    \item<1-> Given experimental data: $\{(x_i, u_i)\}$ from system operation
+    \item<2-> Objective: Find control law $u = \kappa(x)$ that is safe and stabilizing
+    \item<3-> Safety constraint: Ensure system stays within safe region $\mathcal{S}$
+    \item<4-> Formulation:
+      \begin{equation*}
+        \text{maximize } \rho \quad \text{subject to } \Pr[\mathbf{x} \in \mathcal{S}] \geq 1-\epsilon
+      \end{equation*}
+    \item<5-> Solution: Reformulate using density functions and SDP
+  \end{itemize}
 \end{frame}
 
 %--------------------------------------------------------
