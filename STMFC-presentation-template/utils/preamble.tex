@@ -1,0 +1,93 @@
+% ------------------------- Packages ---------------------------------
+
+\usepackage[utf8]{inputenc}
+\usepackage{multirow,rotating}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{tikz-cd}
+\usepackage{array}
+\usepackage{mathtools,nccmath}%
+\usepackage[normalem]{ulem}
+\usepackage{pgfplots}
+\usepackage{pdfpages}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{fontawesome}
+\usepackage{outlines}
+\usepackage[11pt]{moresize}
+\usepackage{datetime}
+\usepackage{tabularx}
+\usepackage[numbers]{natbib}
+\usepackage{pgfpages}
+\usepackage{appendixnumberbeamer}
+\usepackage{appendix}
+\usepackage{adjustbox}
+\usepackage{multimedia}
+
+% ------------------------ Settings -------------------------------
+\useunder{\uline}{\ul}{}
+
+\usetikzlibrary{matrix, decorations.pathreplacing}
+\usetikzlibrary{shapes,backgrounds}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{intersections}
+
+\newcommand*{\graybullet}{\textcolor{gray}{\textbullet}}
+\newcommand*{\bluebullet}{\textcolor{blue}{\textbullet}}
+\newcommand*{\redbullet}{\textcolor{red}{\textbullet}}
+
+
+% ---------------  Define theme and color scheme  -----------------
+\usetheme[minimal]{IFR}  % 2 options: minimal, sidebarleft
+
+\setbeamercovered{transparent} 
+
+\makeatletter
+\AtBeginDocument{%
+  \let\@biblabel\NAT@biblabelnum
+  \let\@bibsetup\NAT@bibsetnum}
+\makeatother
+
+\hypersetup{
+  colorlinks=true,
+  citecolor=black
+}
+
+\setbeamerfont{block title}{size=\normalsize}
+\setbeamerfont{block body}{size=\small}
+
+% ------------------------- Theorem environments -------------------
+
+\newtheorem{remark}{Remark}
+\newtheorem{algorithm}{Algorithm}
+\newtheorem{conferences}{Conferences}
+\newtheorem{assumptions}{Assumptions}
+
+\AtBeginEnvironment{conferences}{%
+  \setbeamercolor{block title}{use=example text,bg=orange!90!yellow}
+  \setbeamercolor{block body}{parent=normal text,use=block title example}
+}
+
+\AtBeginEnvironment{remark}{%
+  \setbeamercolor{block title}{use=example text,bg=Green!70!black}
+  \setbeamercolor{block body}{parent=normal text,use=block title example}
+}
+
+\AtBeginEnvironment{definition}{%
+  \setbeamercolor{block title}{use=example text,bg=orange!90!yellow}
+  \setbeamercolor{block body}{parent=normal text,use=block title example}
+}
+
+\mode<handout>{%
+  \pgfpagesuselayout{2 on 1}[a4paper] 
+  \setbeameroption{show notes}
+}
+
+
+
+
+
+
+

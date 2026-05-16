@@ -1,0 +1,106 @@
+% Formally establish Beamer theme package
+\ProvidesPackage{beamerthemeIFR}
+
+% --------  Invoke presentation mode  ----------------
+\mode<presentation>
+
+% --------  Set color, inner theme, frame title formats, etc.  ------------
+\usecolortheme{IFR}
+\useinnertheme{circles}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+
+
+
+
+% --------  Define behavior for theme option "minimal"  -----------
+\DeclareOptionBeamer{minimal}{
+
+    \usecolortheme{IFR}
+
+    \setbeamercolor{section in head/foot}{parent=palette quaternary}
+    
+    \colorlet{global.bg}{bg}
+    \usebeamercolor{subsection in head/foot}
+    \usebeamercolor{section in head/foot}
+    \usebeamercolor{frametitle}
+    \pgfdeclareverticalshading{beamer@barshade}{\the\paperwidth}{%
+        color(0ex)=(section in head/foot.bg);%
+        color(6ex)=(section in head/foot.bg)%
+    }
+    \pgfdeclareverticalshading{beamer@belowframetitle}{\the\paperwidth}{%
+        color(0ex)=(pgftransparent!100);%
+        color(1ex)=(pgftransparent!0)
+    }
+    \pgfdeclarefading{beamer@belowframetitlemask}{\pgfuseshading{beamer@belowframetitle}}
+
+    % remove the headline completely
+    \makeatletter % to change template
+      \setbeamertemplate{headline}[default] % not mandatory, but I though it was better to set it blank
+      \def\beamer@entrycode{\vspace*{-\headheight}} % here is the part we are interested in :)
+    \makeatother
+
+
+\newcommand{\frameofframes}{/}
+\newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
+\setbeamertemplate{footline} {%
+    \pgfuseshading{beamer@barshade}%
+
+    \vskip-0.05ex%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=1ex,dp=0ex]{empty}
+        \begin{pgfpicture}
+            \begin{pgfscope}%
+                \pgfsetfillcolor{section in head/foot.bg}%
+                \pgfpathrectangle{\pgfpoint{-.5\paperwidth}{-0.5ex}}{\pgfpoint{\paperwidth}{1ex}}%
+                \pgfsetfading{beamer@belowframetitlemask}{}%
+                \pgfusepath{fill}%
+            \end{pgfscope}%
+        \end{pgfpicture}%
+    \end{beamercolorbox}%
+    \vskip-6.85ex%
+
+  \begin{beamercolorbox}[ignorebg, leftskip = 0.3\paperwidth, ht=2.25ex,dp=3.75ex]{section in head/foot}
+    %\insertnavigation{0.6\paperwidth}
+    \hfill
+        \textcolor{greytext}{\insertframenumber / \inserttotalframenumber}
+        \hspace{0.3cm}
+  \end{beamercolorbox}%
+  }
+\makeatother
+
+}
+
+% Guarantee that all pages are numbered
+\setbeamertemplate{caption}[numbered]
+
+%  frame to be used for plain slides
+\makeatletter
+% define new command plain
+\newcommand{\plain}[1]{\frame[plain,t, label=first, noframenumsbering]{%
+  % move current position to remove left margin
+  \hspace*{-\beamer@leftmargin}%
+  % create minipage of full paperwith to remove right margin
+  \minipage[c][\textheight][t]{0.79\paperwidth}%
+    \vspace{1cm}
+    #1%
+    % add paragraph to keep vertical (fill) space at the end of the minipage
+    \par\vskip\z@%
+  \endminipage%
+}}
+% reset the meaning of the letter @
+\makeatother
+
+
+\makeatletter
+\def\beamerrightmargin{\dimexpr\Gm@rmargin\relax}
+\makeatother
+
+\ProcessOptionsBeamer
+
+% --------  Set the font themes to be used here  -----------------
+%\usepackage{helvet}  % use Helvetica as text fonts
+
+% --------  Remove navigation symbols from appearing  ----------------
+\setbeamertemplate{navigation symbols}{}
+
+% --------  Invoke all mode
+\mode<all>

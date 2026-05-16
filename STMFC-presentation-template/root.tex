@@ -1,0 +1,386 @@
+%\PassOptionsToClass{handout}{beamer}
+\documentclass[8pt, hyperref={bookmarks=false},aspectratio=169, xcolor=table]{beamer}
+
+% INSERT PREAMBLE FILE (contains all the packages and configurations)
+\input{utils/preamble.tex}
+
+% INSERT CONFIG FILE (contains all the basic information about the presentation) 
+\input{utils/config.tex}
+
+% ---------------------------- BEGIN DOCUMENT ------------------------------
+
+\begin{document}
+
+\setbeamertemplate{mini frame}{%
+  \begin{pgfpicture}{0pt}{0pt}{0.1cm}{0.1cm}
+    \pgfsetfillcolor{red} % Use the custom color here
+    \pgfpathcircle{\pgfpoint{0.05cm}{0.05cm}}{0.05cm}
+    \pgfusepath{fill,stroke}
+  \end{pgfpicture}%
+}
+
+% INSERT TITLE PAGE
+\input{utils/title-page.tex}
+
+% ---------------------------- Content -------------------------------------
+
+% color of links
+\hypersetup{
+  colorlinks=on,
+  linkcolor=black,     % Color of internal links
+  urlcolor=black       % Color of URLs
+}
+
+%---------------------------------------------------------
+\section{Overview}
+%---------------------------------------------------------
+
+\begin{frame}\frametitle{Overview}
+  \tableofcontents
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{A Frame}
+  This is the first frame. It's not very exciting, but still, it's the first frame. 
+  
+  Slides should contain a descriptive text. But not full sentences like these. 
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{Overlays}
+  \begin{enumerate}
+    \item<1-> Some people like overlays in their presentation.
+    \item<2-> i.e., slides that build up step-wise.
+    \item<3-> Note that these overlays do not increase the number of slides on right bottom corner.
+    \item<4-> Some commands include `\textit{pause}', `\textit{uncover}', `\textit{only}', etc.
+    \item<5-> There is no need to copy the information from one slide to the other to create overlays!
+  \end{enumerate}
+\end{frame}
+
+%---------------------------------------------------------
+\section{TikZ Examples}
+%---------------------------------------------------------
+
+\begin{frame}\frametitle{Awesome TikZ}
+  % telling how nice tikz is
+  \centering
+  \begin{adjustbox}{width=0.35\linewidth}
+  \begin{tikzpicture}
+    \node[draw,circle,minimum size=2cm,inner sep=0pt, align=center, font=\bfseries, fill={rgb:red,0;green, 7.5;blue,10}, text=white] at (6.5,-0.5) {TikZ \\ is \\ awesome};
+  \end{tikzpicture}
+  \end{adjustbox}\\
+  \vspace{0.1cm}
+  \large In the next slides, we will see some examples.
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{TikZ Example - 1}
+
+  \centering
+  \begin{tikzpicture}[scale=0.9]
+    \node[draw,circle,minimum size=2cm,inner sep=0pt, align=left, font=\bfseries, fill={rgb:red,0;green, 7.5;blue,10}, text=white, scale=1.5] at (6.5,-0.5) {Research \\Interests};
+
+    \node[text=black, font=\normalsize, align=left] at (10.5,-1) {Real Algebra};
+
+    \node[text=black, font=\normalsize, align=left] at (6.5,-3.8) {Reachability Analysis};
+
+    \node[text=black, font=\normalsize, align=left] at (3,-1.1) {MPC};
+
+    \node[text=black, font=\normalsize, align=left] at (9.5,1.5) {Optimal Control};
+
+    \node[text=black, font=\normalsize, align=left] at (4,1.5) {Data-driven \\Control methods};
+
+    %\pause
+
+    \draw[->,>=stealth',semithick] (10,-0.5) arc
+    [
+        start angle=0,
+        end angle=30,
+        x radius=3.5cm,
+        y radius =3.5cm
+    ] ;
+
+    \draw[->,>=stealth',semithick] (9.2,1.7) arc
+    [
+        start angle=40,
+        end angle=130,
+        x radius=3.5cm,
+        y radius =3.5cm
+    ] ;
+
+    \draw[->,>=stealth',semithick] (3.4,1) arc
+    [
+        start angle=150,
+        end angle=182,
+        x radius=3.5cm,
+        y radius =3.5cm
+    ] ;
+
+    \draw[->,>=stealth',semithick] (3.1,-1.4) arc
+    [
+        start angle=190,
+        end angle=240,
+        x radius=3.4cm,
+        y radius =3.4cm
+    ] ;
+
+    \draw[->,>=stealth',semithick] (8,-3.7)  arc
+    [
+        start angle=295,
+        end angle=345,
+        x radius=3.4cm,
+        y radius =3.4cm
+    ] ;
+
+  \end{tikzpicture}
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{TikZ Example - 2}
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) circle (3);
+            \draw (0,3) -- (0,0) -- (3*0.866,-3*0.5) (0,0) -- (-3*0.866,-3*0.5);
+            \node[text=red!50!black, font=\bfseries\large, align=left] at (0,-1.5) {\textbf{Project}};
+            \node[text=blue!50!black, font=\bfseries\large, align=left] at (1.5*0.866,1.5*0.5) {\textbf{Research}};
+            \node[text=green!50!black, font=\bfseries\large, align=left] at (-1.5*0.866,1.5*0.5) {\textbf{iFR Chores}};
+    \end{tikzpicture}
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{TikZ Example - 3}
+  \begin{figure}[H]
+      \centering
+      \begin{adjustbox}{width=0.5\linewidth}
+      \begin{tikzpicture}
+        % Grid
+        \draw[lightgray!20] (0,0) grid (8,8);
+
+        % Puzzle
+        \draw[line width=3pt, cap=round, rounded corners=1pt, draw=black!75] (-0.5,-0.5) -| (8.5,8.5)
+        (7.5,8.5)-|(-0.5,0.5) -- (0.5,0.5) (-0.5,2.5)-|(0.5,4.5)
+        (0.5,5.5)|-(4.5,7.5)|-(3.5,3.5)|-(2.5,2.5)|-(3.5,1.5)
+        (8.5,0.5)--(6.5,0.5)
+        (5.5,0.5)-|(3.5,-0.5)
+        (3.5,0.5)-|(1.5,3.5)-|(2.5,5.5)
+        (2.5,4.5)-|(3.5,6.5)-|(1.5,4.5)
+        (7.5,8.5)|-(5.5,6.5)--(5.5,7.5)
+        (6.5,7.5)--(6.5,8.5)
+        (8.5,3.5)-|(6.5,4.5)-|(7.5,5.5)
+        (6.5,5.5)-|(5.5,2.5)--(4.5,2.5)
+        (5.5,2.5)-|(7.5,1.5)--(4.5,1.5)
+        (5.5,4.5)--(4.5,4.5)
+        (1.5,1.5)--(0.5,1.5)
+        (1.5,7.5)--(1.5,8.5);
+
+        % Start and End Points
+        \draw[-latex,line width=3pt,red] (-1,0)--(0,0);
+        \draw[-latex,line width=3pt,red] (8,8) -- (8,9);
+
+        \node[] at (-2.5,0) {\Huge Na\"ive Me};
+        \node[] at (8,9.5) {\Huge Ph.D.};
+      \end{tikzpicture}
+    \end{adjustbox}
+    \end{figure}
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{TikZ Example - 4}
+  \begin{figure}[H]
+    \centering
+    \begin{adjustbox}{width=0.34\linewidth}
+    \begin{tikzpicture}
+        
+        \begin{scope}[shift={(0,0)}, scale=2]
+            \draw[name path=path1] (0,0)  arc (100:90:7) coordinate(A);
+            \draw[name path=path2] (0,0) arc (160:170:4) coordinate(B);
+            \draw[name path=path3] (A) arc (160:170:4);
+            \draw[name path=path4] (B) arc (100:90:7);
+
+            \draw[red, thick, fill=red] (0,-0.5) coordinate(P1) circle (0.01);
+            \draw[red, thick, fill=red] (0.2,-0.1) coordinate(P2) circle (0.01);
+            \draw[red, thick, fill=red] (0.5,-0.5) coordinate(P3) circle (0.01);
+            \draw[red, thick, fill=red] (1,0) coordinate(P4) circle (0.01);
+
+            \draw[cyan, densely dashed] plot [smooth, tension=1] coordinates { (P1) (P2) (P3) (P4)};
+            \node at (0.9,-0.5) {\footnotesize $\mathbb{R}^m$};
+            \node at (1.7, -0.25) {\footnotesize $\dot{\mathbf{y}}=\mathbf{A}\mathbf{y}$};
+        \end{scope}
+        
+        \draw[-latex] (1,-2.5) -- (1,-1.4);
+        \node[anchor=west] at (1.1,-2) {\footnotesize $g:\mathbb{R}^n \to \mathbb{R}^m$};
+
+        \begin{scope}[shift={(0,-3)}, scale=2]
+            \draw[name path=path1] (0,0)  arc (100:90:7) coordinate(A);
+            \draw[name path=path2] (0,0) arc (160:170:4) coordinate(B);
+            \draw[name path=path3] (A) arc (160:170:4);
+            \draw[name path=path4] (B) arc (100:90:7);
+            % circle around the node
+            \draw[red, thick, fill=red] (0.1,-0.5) coordinate(P1) circle (0.01);
+            \draw[red, thick, fill=red] (0.25,-0.15) coordinate(P2) circle (0.01);
+            \draw[red, thick, fill=red] (0.6,-0.4) coordinate(P3) circle (0.01);
+            \draw[red, thick, fill=red] (1,-0.1) coordinate(P4) circle (0.01);
+
+            \draw[cyan, densely dashed] plot [smooth, tension=1] coordinates { (P1) (P2) (P3) (P4)};
+            \node at (0.9,-0.5) {\footnotesize $\mathbb{R}^n$};
+            \node at (1.7, -0.25) {\footnotesize $\dot{\mathbf{x}}=f(\mathbf{x})$};
+        \end{scope}
+    \end{tikzpicture}
+    \end{adjustbox}
+    \caption{Some description}
+    \label{fig:koopman}
+  \end{figure}
+\end{frame}
+
+%---------------------------------------------------------
+
+\begin{frame}\frametitle{TikZ Keviats}
+  Well, tikz is AWESOME, however as you probably noticed by now, it can take a lot of time compiling the whole document if it contains multiple tikzpictures.
+  
+  If possible, generate the tikzpictures in a standalone file, i.e., generate .pdf files with the figures and only import those to the main file. Believe me, it will reduce by a lot the time you spend waiting for the compiled file.
+\end{frame}
+
+%---------------------------------------------------------
+\section{Useful Features}
+%---------------------------------------------------------
+
+\begin{frame}\frametitle{Equations}
+  Since this is latex, we can use equations.
+
+  \vspace{0.2cm}
+
+  % example
+  \begin{equation}
+    \dot{\mathbf{x}} = \mathbf{A}\mathbf{x} + \mathbf{B}\mathbf{u}
+  \end{equation}
+
+  \vspace{0.2cm}
+
+  All equations are numbered by the order they appear in the presentation. But if you don't want a numbered equation, you can still do it
+
+  \vspace{0.2cm}
+  
+  \begin{equation*}
+    E = mc^2
+  \end{equation*}
+\end{frame}
+
+
+%--------------------------------------------------------
+ 
+\begin{frame}\frametitle{Blocks}
+
+  \centering
+  \begin{minipage}{0.7\linewidth}
+    One useful and nice feature is the block environment (\textit{newtheorem}). It can be used to highlight important information. (see preamble.tex)
+  
+  
+
+  \vspace{0.5cm}
+
+  \begin{conferences}
+    \begin{enumerate}
+      \item American Control Conference, Toronto, July 2024 \\ Initial deadline: \textbf{September 22, 2023}
+      \item European Control Conference, Stockholm, June 2024 \\ Initial deadline: \textbf{October 25, 2023}
+    \end{enumerate}
+  \end{conferences}
+
+  \begin{theorem}[Theorem name]
+    This is a theorem. % smily face
+  \end{theorem}
+  \begin{remark}
+    This is a remark.
+  \end{remark}
+
+  \end{minipage}
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}[t]\frametitle{Include figures}
+  \begin{minipage}[t]{0.48\textwidth}
+    \begin{figure}[H]
+    \includegraphics[width=0.85\linewidth]{example-image-a}
+    \caption{Caption 1}
+    \end{figure}
+
+  \end{minipage}%
+  \begin{minipage}{0.05\textwidth}
+    \hfill
+  \end{minipage}%
+  \begin{minipage}[t]{0.48\textwidth}	  
+    \begin{figure}
+    \includegraphics[width=0.85\linewidth]{example-image-b}
+    \caption{Caption 2}
+    \end{figure}
+  \end{minipage}
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{Insert videos}
+    \begin{center}  
+      \movie[width=0.5\textwidth, height= 0.3\textwidth,
+      autostart, showcontrols, repeat]{}{figures/apollo17.avi}
+    \end{center}
+    \vspace{0.5cm}
+    Note that only some pdf viewer can render the video. For presentions I recommend using `\textit{pdfpc}', an open source presentation viewer that mimics the presentation layout from PowerPoint (some advantages include a timer, a way to see the next slide before it is presented and the use of a pointer or a pen)
+\end{frame}
+
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{Citations}
+  Just as a normal .tex document we can use .bib files to cite references. 
+  \vspace{0.5cm}
+  \begin{itemize}
+    \item Some random text\ldots~\cite{Smith1986}
+    \item Another random text\ldots~\cite{
+      Parrilo2003, Muldowney1990}
+  \end{itemize}
+
+  \vspace{0.5cm}
+  The references are shown at the end of the presentation automatically. 
+  
+\end{frame}
+
+%--------------------------------------------------------
+
+\begin{frame}\frametitle{Bibliography}
+  
+  In the next slide, you have the default final slide. You can edit it as you see fit. 
+
+  In the current state you just need to change the photo and a few information details.
+\end{frame}
+
+
+%--------------------------------------------------------
+% Biography and last slide
+%--------------------------------------------------------
+\input{utils/bio.tex}
+
+% -------------------------------------------------------
+% Bibliography
+% Just remove the comment if you want to include a reference 
+% slide
+% -------------------------------------------------------
+
+\begin{frame}[allowframebreaks]
+    \frametitle{References}
+    \bibliographystyle{unsrt}    % sorted (appears in order of citation)
+    \bibliography{utils/references.bib}
+\end{frame}
+
+% -------------------------------------------------------
+% Appendix
+% -------------------------------------------------------
+
+%\input{utils/appendix.tex}
+
+\end{document}

@@ -1,0 +1,37 @@
+%---------------------------------------------------------
+% Appendix slides
+% Not presented in the root.pdf file
+%---------------------------------------------------------
+
+\begin{frame}[plain]
+    
+    \begin{tikzpicture}[overlay, remember picture]
+        \clip (current page.north west) rectangle (current page.south east);
+      \shade[%
+        top color= renatoSblue!70!white,
+        bottom color= renatoSblue,
+        shading angle=-45,
+        opacity=1
+        ]
+        (current page.north west) rectangle (current page.south east);
+      \end{tikzpicture}
+    
+    \begin{tikzpicture}    
+        \node[text width=3.5cm, opacity=1] at (0,-1) {\textcolor{white}{\Huge{{\fontsize{50}{60}\selectfont Appendix}}}};
+    \end{tikzpicture}
+    
+\end{frame}
+
+\appendix
+
+%---------------------------------------------------------
+\section{Appendix}
+%---------------------------------------------------------
+
+%---------------------------------------------------------
+\begin{frame}\frametitle{Appendix}
+
+
+\end{frame}
+
+

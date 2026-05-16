@@ -1,0 +1,142 @@
+\KOMAoptions{headlines=4, footlines=1, bibliography=totoc}\recalctypearea
+
+%====================  Necessary Packages (Layout etc.) ====================
+\usepackage[headsepline=0.4pt]{scrlayer-scrpage}	%	To customize headers and footers
+
+% Increase top margin and decrease bottom margin w.r.t. KOMAScript standard
+\usepackage[top=40mm,bottom=35mm]{geometry}	
+
+% For a german report, replace the option 'english' by 'ngerman' (no typo, the first 'n' means 'new')
+\usepackage[english]{babel}	
+
+% For some reason, LaTeX throws a warning if babel is used without csquotes...
+\usepackage{csquotes}
+
+% Allows conditional text depending on language of report 
+\usepackage{iflang}
+														
+\usepackage{graphicx}				%	Include figures with \includegraphics
+\usepackage{helvet}					%	Use Helvetica as sans-serif font
+\usepackage[nomentbl]{nomencl}		%	Generate nomenclature
+\usepackage{tabularx}				%	Some added functionality for tables
+
+% Use biblatex for bibliography
+% 'backend=biber' means that instead of calling bibtex one should call biber to process the citations
+\usepackage[style=numeric-comp,
+			sorting=none,
+			backend=biber,
+			maxbibnames=5,
+			maxcitenames=2]{biblatex}	
+
+
+%====================	Recommended Packages	====================
+%	Generates list of acronyms; full definition is printed the first time, afterwards only the acronym is printed
+\usepackage[printonlyused]{acronym}		
+
+\usepackage{amssymb}		%	Additional math symbols such as blackboard bold with \mathbb
+\usepackage{booktabs}		%	Nicer tables 
+\usepackage{mathtools}		%	Loads amsmath and includes some minor bugfixes
+\usepackage{pgfplots}		%	TiKZ-compatible package to plot data nicely
+\usepackage{siunitx}		%	Proper typesetting of numbers and units
+\usepackage{collcell}		%	'Collects' contents of a table column in order to use a macro on it (helps when siunitx is used to create a table column just for units)
+\usepackage{tikz}			%	Extensive package to create graphics, e.g. block diagrams...
+\usepackage{upgreek}		%	For typesetting of upright greek letters for mathematical constants (e.g. Pi)
+\usepackage{xcolor}			%	Use different colors with \color{} 
+
+%--- Feel free to add packages as needed:
+\usepackage[final]{showlabels}	%	For draft: prints labels of equations etc.
+\usepackage{arydshln}			%	Dashed lines in math mode arrays (e.g., matrices)
+\usepackage{amsthm}				%	For theorem-style environments
+%----------------------------------------
+
+% Make sure that 'hyperref' is loaded last.
+% Adds hyperlinks to refs and provides \autoref command (consistent mentioning of 'section', 'Table', etc.)
+\usepackage{hyperref}		
+
+
+%====================	Settings and Definitions ====================
+
+\addto\extrasenglish{%
+	% Define Denotations for \autoref
+	\def\chapterautorefname{Chapter}
+	\def\sectionautorefname{Section}
+	\def\subsectionautorefname{Section}
+	\def\figureautorefname{Figure}
+	\def\tableautorefname{Table}
+	\def\appendixautorefname{Appendix}
+	\def\equationautorefname~#1\null{Equation~(#1)\null}
+}
+
+% .bib-File has to be included in preamble when using biblatex:
+\addbibresource{utils/references.bib}
+
+\setnomtableformat{lp{0.45\textwidth}>{\collectcell\unit}c<{\endcollectcell}p{0.3\textwidth}l}
+\setlength{\nomitemsep}{0pt}	% No additional space between entries of nomenclature
+\setlength\LTleft{-5pt}			% Align nomenclature longtable to the left
+
+% TikZ and pgfplots:
+\pgfplotsset{compat=1.17}		% If a warning pops up, replace '1.17' with suggested version
+\usetikzlibrary{external}		% TiKZ pictures will be compiled to pdfs, which will speed up compilation in later runs
+\tikzexternalize[prefix=tikz/]	% Activate externalization and define prefix for externalized TiKZ pictures
+\tikzexternaldisable
+%--- Feel free to add more TiKZ libraries as needed
+
+%----------------------------------------
+% Allow page breaks in long align-envs:
+\allowdisplaybreaks
+
+
+%====================  Macros/Laziness ====================
+\renewcommand{\vec}{\boldsymbol}	% Typeset vectors in bold italics
+\newcommand{\mat}{\boldsymbol}		% Typeset matrices in bold italics
+
+\newcommand{\e}{\mathrm{e}}			%	Upright e for Euler's number
+\newcommand{\td}{\mathrm{d}}		%	Upright d for differential operator
+
+%--- Feel free to add your own macros
+
+%----------------------------------------
+
+% This command returns the current semester based on the current month.
+\newcommand{\currentsemester}{%
+  \ifcase\month\or
+  Winter      % January
+  \or Winter  % February
+  \or Winter  % March
+  \or Summer  % April
+  \or Summer  % May
+  \or Summer  % June
+  \or Summer  % July
+  \or Summer  % August
+  \or Summer  % September
+  \or Winter  % October
+  \or Winter  % November
+  \or Winter  % December
+  \fi
+}
+
+\newcommand{\currentsemesterabrev}{%
+  \ifcase\month\or
+  WS      % January
+  \or WS  % February
+  \or WS  % March
+  \or SS  % April
+  \or SS  % May
+  \or SS  % June
+  \or SS  % July
+  \or SS  % August
+  \or SS  % September
+  \or WS  % October
+  \or WS  % November
+  \or WS  % December
+  \fi
+}
+
+%====================	Header	====================
+\pagestyle{scrheadings}
+\setkomafont{pagehead}{\sffamily \bfseries \upshape \small }
+\clearpairofpagestyles
+\ohead{\small \UniS \\ \iFR \\[0.5ex]{\footnotesize Prof. Dr.-Ing. Walter Fichter}\vspace{-1.45\baselineskip}}	%	Outer header
+\ihead{\includegraphics[height=2\baselineskip]{figures/ifrlogo}}	
+\setlength{\headsep}{4\baselineskip} % distance between header and text
+%\setheadsepline{0.4pt}

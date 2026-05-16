@@ -1,0 +1,144 @@
+\documentclass[11pt, twoside=false, usegeometry=true, parskip=half, toc=listof, numbers=noendperiod]{scrreprt}
+
+
+\newcommand{\iFR}{Institute of Flight Mechanics and Controls}
+\newcommand{\UniS}{University of Stuttgart}
+\input{utils/preamble.tex}
+
+%====================	Definitions for Title Page	====================
+
+%--- Specify Your Information here:
+
+% Semester
+\newcommand{\SemesterYear}{\currentsemester~\the\year} 
+
+% Version number on titlepage eg. 1.4
+\newcommand{\VersNrT}{1.0}  
+
+% Seminar Full Name
+\newcommand{\SeminarName}{System Theoretical Methods for Flight Control}
+
+% Abbreviation of the Seminar
+\newcommand{\TNNr}{STMFC} 
+
+% Title of the report
+\newcommand{\Titel}{Region of attraction with Integral Quadratic Constraints}  
+
+% Author(s) of the technical note
+\newcommand{\Autor}{First Last} 
+
+%----------------------------------------
+
+%====================	Footer	====================
+\setkomafont{pagefoot}{\sffamily \bfseries \upshape \small}
+\ifoot [\TNNr] {\TNNr} 
+\ifoot [\currentsemesterabrev\the\year] {\currentsemesterabrev\the\year}
+
+%====================	Beginning of Document	====================
+\begin{document}
+\input{utils/title-page.tex}
+
+%====================	Actual Document	====================
+\chapter{Introduction}
+\section{General Remarks/Tips}
+\begin{itemize}
+	\item Using \verb|\autoref{fig:Cmg}| to refer to labels (such as \autoref{fig:Cmg}) has two advantages: First, the notation will be consistent throughout the entire document. Second, the hyperlink will cover the denotation as well.
+\begin{figure}[htbp]	% [htbp] should be included because LaTeX's default is [tbp], i.e. placing the figure 'here' would never be tried
+	\centering
+	\includegraphics[width=0.5\textwidth]{example-image-a}
+	\caption{Control Moment Gyro}
+	\label{fig:Cmg}
+\end{figure}
+	\item The \textsf{AMSlatex} package\footnote{\url{https://ctan.org/pkg/amslatex}} provides many useful commands for math mode, the arguably most important being the environments \verb?equation*? for unnumbered equations,  \verb|align| and \verb|align*| for arrays of equations (the starred version has no numbers), and \verb,pmatrix, or \verb|bmatrix| for matrices with parentheses or brackets, respectively:
+		\begin{align}
+			\dot{x}	&=	A(\rho)\, x	\notag	\\
+				&=	\begin{bmatrix}
+					a_{11}	&	a_{12}	\\
+					a_{21}	&	a_{22}(\rho)
+				\end{bmatrix}\,\begin{pmatrix}
+					x_1	\\	x_2
+				\end{pmatrix}
+		\end{align}
+		\nomenclature[A]{$\vec{x}$}{State}{Unit}{Remark}%	\nomenclature sometimes doesn't like line breaks before it, so add a '%' on the line above to be safe
+		\nomenclature[A]{$\mat{A}$}{System matrix}{\metre}{Remark}%
+		\nomenclature[G]{$\rho$}{Parameter}{-}{Remark}%
+	\item Using the \textsf{acronym} package\footnote{\url{https://ctan.org/pkg/acronym}}, acronyms defined in the \texttt{acronym} environment can be used with \verb|\ac| and other commands (see  \autoref{tab:acros})
+		\begin{table}[htbp]
+			\centering
+			\caption{Acronym Commands}
+			\label{tab:acros}
+			\begin{tabular}{lll}
+				\toprule
+				\textbf{What?}	&	\textbf{Command}	&	\textbf{Output}\\
+				\midrule
+					First call	&	\verb|\ac{UAV}|	&	\ac{UAV}	\\
+					All following calls	&	\verb|\ac{UAV}|	&	\ac{UAV}	\\
+					With indef. article &	\verb|\Iac{UAV}, \iac{UAV}| 	&	\Iac{UAV}, \iac{UAV}	\\
+					Plural	&	\verb|\acp{UAV}|	&	\acp{UAV}	\\
+					Use long form again	&	\verb|\acl{UAV}|	&	\acl{UAV}	\\
+				\bottomrule
+			\end{tabular}
+		\end{table}
+	\item The \textsf{biblatex} package\footnote{\url{https://ctan.org/pkg/biblatex}} provides several useful citation commands in addition to \verb|\cite|. For example, \verb|\textcite{Notter2020MultipleThermalUpdraft}| yields \textcite{Notter2020MultipleThermalUpdraft}
+	\item A nice feature of the \textsf{siunitx} package\footnote{\url{https://ctan.org/pkg/siunitx}} is the definition of table columns for numbers such that they are aligned at the decimal marker (see \autoref{tab:UnitsInTables}).
+\end{itemize}
+\begin{table}[htbp]
+	\centering
+	\caption{Numbers and Units in Tables}
+	\label{tab:UnitsInTables}
+	\begin{tabular}{lcS[table-format=3.2]>{\collectcell\unit}c<{\endcollectcell}}
+		\toprule
+			\multicolumn{2}{c}{\textbf{Parameter}}	&	\multicolumn{2}{c}{\textbf{Value}}	\\
+		\midrule
+			Position	&	$p$	&	120,4	&	\metre	\\
+			Time	&	$t$	&	,08	&	s	\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+
+\section{Typesetting Formulas}
+
+This is a brief summary of typographical conventions for technical/scientific writing based on DIN~1338. As a general rule of thumb, \textbf{variables and physical quantities are set in \textit{italic} font; everything else is set in upright font}. See \autoref{tab:TypesettingFormulas} and the following list for rules and examples.
+\begin{table}[htbp]
+	\centering
+	\caption{Typesetting Formulas}
+	\label{tab:TypesettingFormulas}
+	\begin{tabular}{lll}
+		\toprule
+			\textbf{What?}	&	\textbf{How?}	&	\textbf{Examples}	\\
+		\midrule
+			Numbers denoted by digits	&	upright	&	1, 2, 3	\\
+			Numbers denoted by symbols	&	\textit{italic}	&	$x, y, z, i, j, k$	\\
+			Mathematical constants	&	upright	&	$\mathrm{e}, \uppi, \mathrm{j}$	\\
+			Physical constants (e.g. speed of light)	&	\textit{italic}	&	$c$	\\
+			Units (including their prefixes)	&	upright	&	m, km, \si{\micro\radian}	\\
+			Indices follow the same convention	&	upright/\textit{italic}	&	$x_{\mathrm{true}} = \sum_{i=1}^n y_i$	\\
+			Functions with arbitrary symbol	&	\textit{italic}	&	$f(x), g(u)$	\\
+			Conventional functions	&	upright	&	$\sin, \cos, \ln, \exp$	\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{itemize}
+	\item Conventional functions and operators are separated from their arguments by a small space, e.g. $\sin\phi, \ln x$. Exceptions are the differential and difference operators, i.e. $\partial x$, $\td\phi$, and $\Delta t$. \LaTeX\ usually gets this right, so there should be no need to include \verb|\,| between function and argument.
+	\item	Products are denoted by setting the factors next to each other ($x = yz$); potential ambiguities can be resolved by setting a small space with \verb|\,| ($x = y\,z$).
+	\item Note the difference in German and English typesetting of numbers:
+		\begin{gather*}
+			\text{German: }	\num[locale = DE]{1,234e-5}	\\
+			\text{English: }	\num[locale = US]{1,234e-5}
+		\end{gather*}
+		The \verb|\num| command of the \textsf{siunitx} package\footnote{\url{https://ctan.org/pkg/siunitx}} takes care of this: \verb|\num{0,12e3}| and \verb|\num{.12e3}| yield \num{0,12e3} and \num{.12e3}.
+	\item Numbers and their units (except the degree symbol) are separated by a small space. The easiest way is to use the \textsf{siunitx} package: For instance, \verb|\qty{12345,67}{km}| and \verb|\qty{90}{\degree}| yield \qty{12345,67}{km} and \qty{90}{\degree}, respectively.
+\end{itemize}
+
+\nocite{*}
+
+%====================	Appendix	====================
+\appendix
+
+%====================	References	====================
+\printbibliography
+
+\end{document}
+

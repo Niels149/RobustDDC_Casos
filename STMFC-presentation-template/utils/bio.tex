@@ -1,0 +1,38 @@
+%---------------------------------------------------------
+% Biography slide (not used in this template)
+% Instead just upload a pdf file with your biography from
+% powerpoint or keynote with the name Profile.pdf
+%---------------------------------------------------------
+
+\begin{frame}[plain]
+
+    \begin{tikzpicture}[overlay, remember picture]
+      \clip (current page.north west) rectangle (current page.south east);
+      \shade[%
+        top color= renatoSblue!70!white,
+        bottom color= renatoSblue,
+        shading angle=-45,
+        opacity=1
+        ]
+        (current page.north west) rectangle (current page.south east);
+        
+        \node[anchor=north west] at ([xshift=1cm, yshift=-1cm]current page.north west) {\pgfuseimage{unilogow}};
+        \node[text=white, anchor=north west] at ([xshift=2.25cm, yshift=-1.75cm]current page.north west)
+            {Institute of Flight Mechanics and Controls};
+    
+
+        \node[text=white, font=\Large\bfseries, anchor=north west] at ([xshift=1cm, yshift=-3cm]current page.north west) {Thank you!};
+
+
+      % This is the node to change the picture, just change the file specified for the speaker image
+        \node[circle, draw, opacity=1, color=white , minimum size=2.5cm, path picture={
+        \node at (path picture bounding box.center){\pgfuseimage{speaker}};}] at ([xshift=2.3cm, yshift=-5cm]current page.north west) {};
+              
+      % This is the node to change the information 
+
+      \node[text=white, anchor=north west, align=left] at ([xshift=4cm, yshift=-3.8cm]current page.north west){
+        \insertbioINFO
+      };
+        
+    \end{tikzpicture}
+\end{frame}
