@@ -47,45 +47,163 @@
 %---------------------------------------------------------
 \section{Introduction}
 %---------------------------------------------------------
+\begin{frame}\frametitle{Motivation for Data-Driven Control}
+  \begin{itemize}
+    \item \textbf{Bypassing System Identification:} Directly design controllers from experimental data without needing a highly accurate parametric model.
+    \item \textbf{Handling Complexity:} Highly effective for systems with dynamics that are notoriously difficult to model from first principles (e.g., complex aerodynamics, friction).
+    \item \textbf{Reducing Modeling Errors:} Mitigates performance and safety degradation caused by unmodeled dynamics or model-reality mismatches.
+    \item \textbf{Time and Cost Efficiency:} Saves the significant engineering time and effort usually required to build and validate mathematical models.
+  \end{itemize}
+\end{frame}
+
+%---------------------------------------------------------
+\begin{frame}\frametitle{Different Approaches for Data-Driven Control}
+  \centering
+  \vspace{0.5cm}
+  \begin{adjustbox}{max width=\textwidth}
+  \begin{tikzpicture}[
+    level 1/.style={sibling distance=4.2cm, level distance=2.5cm},
+    edge from parent/.style={draw, -latex, thick},
+    box/.style={draw, rounded corners, align=center, minimum height=2cm, text width=3.8cm, fill=blue!10, font=\small},
+    root/.style={draw, rounded corners, align=center, minimum height=1.2cm, text width=5cm, fill=blue!30, font=\bfseries\large}
+  ]
+    \node[root] {DDC Approaches}
+      child { node[box] {\textbf{Direct Data-Driven Control:}\\ Behavioral Systems Theory} }
+      child { node[box] {\textbf{Indirect Data-Driven Control:}\\ Learning + Certainty Equivalence} }
+      child { node[box] {\textbf{Operator-Theoretic Approaches:}\\ Koopman Operator Theory} }
+      child { node[box] {\textbf{Optimization-Based Control:}\\ Reinforcement Learning \& \\Approximate Dynamic Programming} };
+  \end{tikzpicture}
+  \end{adjustbox}
+\end{frame}
+
+%---------------------------------------------------------
+\begin{frame}\frametitle{Different Approaches for Data-Driven Control}
+  \centering
+  \vspace{0.2cm}
+  \begin{adjustbox}{max width=0.9\textwidth}
+  \begin{tikzpicture}[
+    level 1/.style={sibling distance=4.2cm, level distance=2.5cm},
+    edge from parent/.style={draw, -latex, thick},
+    box/.style={draw, rounded corners, align=center, minimum height=2cm, text width=3.8cm, fill=blue!10, font=\small},
+    root/.style={draw, rounded corners, align=center, minimum height=1.2cm, text width=5cm, fill=blue!30, font=\bfseries\large}
+  ]
+    \node[root] {DDC Approaches}
+      child { node[box, fill=green!20, draw=green!50!black, thick] {\textbf{Direct Data-Driven Control:}\\ Behavioral Systems Theory} }
+      child { node[box] {\textbf{Indirect Data-Driven Control:}\\ Learning + Certainty Equivalence} }
+      child { node[box] {\textbf{Operator-Theoretic Approaches:}\\ Koopman Operator Theory} }
+      child { node[box] {\textbf{Optimization-Based Control:}\\ Reinforcement Learning \& \\Approximate Dynamic Programming} };
+  \end{tikzpicture}
+  \end{adjustbox}
+  
+  \vspace{0.5cm}
+  \begin{itemize}
+    \item \textbf{Specific Methods Used in This Paper for Robustness:}
+    \begin{itemize}
+      \item \textbf{Density Functions:} Serve as safety certificates to prove the system avoids unsafe regions.
+      \item \textbf{Bounded Process Noise:} Explicitly accounts for unknown but bounded experimental noise/disturbances.
+      \item \textbf{Convex Optimization (SDP):} Reformulates non-convex safety constraints into tractable Semidefinite Programs.
+      \item \textbf{Sum-of-Squares (SOS):} Relaxes polynomial inequalities to solve the SDP computationally.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%---------------------------------------------------------
 \begin{frame}\frametitle{Goal of the Paper}
-    Goal of the paper is to design a framework for safe control design from experimental data. \\
-    The system is given as:
+  \textbf{Nonlinear System Setup:}
   \begin{equation*}
-    \dot {\mathbf{x}}(t) = f(\mathbf{x}) + g(\mathbf{x}) u(t) + \mathbf{w}(t)
+    \dot{\mathbf{x}}(t) = f(\mathbf{x}(t)) + g(\mathbf{x}(t)) \mathbf{u}(t) + \mathbf{w}(t)
   \end{equation*}
+  \begin{itemize}
+    \item State $\mathbf{x} \in \mathcal{X} \subset \mathbb{R}^n$, Input $\mathbf{u} \in \mathcal{U} \subset \mathbb{R}^m$
+    \item Unknown true dynamics $f(\mathbf{x})$ and $g(\mathbf{x})$ (only noisy data is available)
+    \item Unknown but bounded process noise/disturbance $\mathbf{w}(t) \in \mathcal{W}$
+  \end{itemize}
+  
+  \vspace{0.3cm}
+  \begin{block}{Intended Results (Robust Safety Objective)}
+    Synthesize a state feedback control law $\mathbf{u} = k(\mathbf{x})$ directly from data such that:
+    \begin{itemize}
+      \item The closed-loop system is \textbf{robustly safe}.
+      \item Trajectories starting in an initial set $\mathcal{X}_0$ \textbf{never} enter an unsafe region $\mathcal{X}_u$, despite any allowable disturbance $\mathbf{w} \in \mathcal{W}$.
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 %---------------------------------------------------------
-\begin{frame}\frametitle{Problem Statement}
-  Safe control design from experimental data
-\end{frame}
-
-%---------------------------------------------------------
-\section{Traditional Approach}
+\section{Traditional Approach \& its Challenges}
 %---------------------------------------------------------
 \begin{frame}\frametitle{Traditional Approach}
-  Barrier functions for safety certification
+  Traditionally, robustness and safety verification are achieved through barrier certificates \cite{Prajna2004}. 
+  
+  \vspace{0.3cm}
+  \textbf{Barrier Functions for Safety:}
+  \begin{itemize}
+    \item A barrier function $B(\mathbf{x})$ separates safe states from unsafe states $\mathcal{X}_u$.
+    \item \textbf{Condition:} $B(\mathbf{x}) > 0$ for $\mathbf{x} \in \mathcal{X}_u$ and $B(\mathbf{x}) \le 0$ for safe initial states $\mathcal{X}_0$.
+    \item To ensure trajectories never enter $\mathcal{X}_u$, the derivative along the system dynamics must satisfy:
+  \end{itemize}
+  
+  \begin{equation*}
+    \dot{B}(\mathbf{x}) = \frac{\partial B(\mathbf{x})}{\partial \mathbf{x}} \left( f(\mathbf{x}) + g(\mathbf{x})\mathbf{u} + \mathbf{w} \right) \le 0 \quad \text{on the boundary of the safe set}
+  \end{equation*}
+
+  \vspace{0.1cm}
+  \begin{block}{The Challenge}
+    Jointly searching for a barrier certificate $B(\mathbf{x})$ and a control policy $\mathbf{u} = k(\mathbf{x})$ from data inherently results in a \textbf{non-convex optimization problem} (due to the multiplication of the two unknowns).
+  \end{block}
 \end{frame}
 
 %---------------------------------------------------------
-\section{Limitation}
-%---------------------------------------------------------
-\begin{frame}\frametitle{Limitation}
-  Non-convex optimization, computational challenges
-\end{frame}
-
-%---------------------------------------------------------
-\section{Proposed Solution}
+\section{Proposed Solution \& its Advantage}
 %---------------------------------------------------------
 \begin{frame}\frametitle{Proposed Solution}
-  Density functions for data-driven control
+  To overcome the non-convexity of barrier functions, the proposed framework uses \textbf{Density Functions} $\rho(\mathbf{x})$ as an alternative safety certificate.
+  
+  \vspace{0.3cm}
+  \textbf{Key Idea (Dual to Lyapunov/Barrier):}
+  \begin{itemize}
+    \item Instead of preventing trajectories from crossing a strict boundary, density functions prove that the "flow" of trajectories diverges away from the unsafe set $\mathcal{X}_u$.
+    \item Safety is guaranteed by verifying a linear partial differential inequality on $\rho(\mathbf{x})$.
+  \end{itemize}
+  
+  \vspace{0.3cm}
+  \begin{block}{Convexifying the Synthesis Problem}
+    By introducing a change of variables $\mathbf{v}(\mathbf{x}) = \rho(\mathbf{x}) \mathbf{u}(\mathbf{x})$, the bilinear coupling of the unknown certificate and the unknown controller becomes \textbf{linear}.
+    \begin{equation*}
+      \rho(\mathbf{x}) \mathbf{u}(\mathbf{x}) \text{ (non-convex)} \quad \longrightarrow \quad \mathbf{v}(\mathbf{x}) \text{ (convex)}
+    \end{equation*}
+  \end{block}
 \end{frame}
 
 %---------------------------------------------------------
-\section{Key Advantage}
+\begin{frame}\frametitle{Deriving the SDP Formulation}
+  Since the true continuous-time dynamics are unknown, we rely directly on the collected noisy experimental data and the known noise bounds.
+
+  \vspace{0.3cm}
+  \textbf{From Data to Semidefinite Programming (SDP):}
+  \begin{itemize}
+    \item \textbf{Polynomial Assumptions:} The system dynamics, density function $\rho(\mathbf{x})$, and controller $\mathbf{v}(\mathbf{x})$ are parameterized as polynomials.
+    \item \textbf{Robust Constraints:} The safety condition must hold for all possible disturbances $\mathbf{w} \in \mathcal{W}$ that are consistent with the data.
+    \item \textbf{Sum-of-Squares (SOS) Relaxation:} The strict polynomial non-negativity conditions are relaxed into SOS conditions, which are computationally tractable.
+  \end{itemize}
+
+  \vspace{0.2cm}
+  \begin{block}{Resulting Optimization}
+    The robust safety constraints are reformulated into Linear Matrix Inequalities (LMIs) using the data. The entire synthesis problem is solved as a \textbf{Semidefinite Program (SDP)}.
+  \end{block}
+\end{frame}
+
 %---------------------------------------------------------
-\begin{frame}\frametitle{Key Advantage}
-  Convex reformulation using semidefinite programming (SDP)
+\begin{frame}\frametitle{Advantages Over Traditional Approaches}
+  The proposed density-function framework provides several distinct advantages:
+
+  \vspace{0.3cm}
+  \begin{itemize}
+    \item \textbf{Convex Optimization:} Transforms a notoriously difficult non-convex problem (jointly finding a certificate + controller) into a convex SDP, guaranteeing a global optimum.
+    \item \textbf{Tractable Robustness:} Incorporating bounded process noise mathematically translates into robust LMI conditions, cleanly handled by SOS without making the problem unsolvable.
+    \item \textbf{Directly Data-Driven:} Sidesteps the need to identify the exact nonlinear model first, which is often highly sensitive to modeling errors.
+    \item \textbf{Rational Controller:} The resulting state feedback law $\mathbf{u}(\mathbf{x}) = \frac{\mathbf{v}(\mathbf{x})}{\rho(\mathbf{x})}$ is a rational function, allowing for highly flexible and expressive control policies.
+  \end{itemize}
 \end{frame}
 
 %---------------------------------------------------------
@@ -126,57 +244,23 @@
   \begin{tikzpicture}[scale=0.9]
     \node[draw,circle,minimum size=2cm,inner sep=0pt, align=left, font=\bfseries, fill={rgb:red,0;green, 7.5;blue,10}, text=white, scale=1.5] at (6.5,-0.5) {Research \\Interests};
 
-    \node[text=black, font=\normalsize, align=left] at (10.5,-1) {Real Algebra};
+    \node[text=black, font=\normalsize, align=left] (ra) at (10.5,-1) {Real Algebra};
 
-    \node[text=black, font=\normalsize, align=left] at (6.5,-3.8) {Reachability Analysis};
+    \node[text=black, font=\normalsize, align=left] (reach) at (6.5,-3.8) {Reachability Analysis};
 
-    \node[text=black, font=\normalsize, align=left] at (3,-1.1) {MPC};
+    \node[text=black, font=\normalsize, align=left] (mpc) at (3,-1.1) {MPC};
 
-    \node[text=black, font=\normalsize, align=left] at (9.5,1.5) {Optimal Control};
+    \node[text=black, font=\normalsize, align=left] (oc) at (9.5,1.5) {Optimal Control};
 
-    \node[text=black, font=\normalsize, align=left] at (4,1.5) {Data-driven \\Control methods};
+    \node[text=black, font=\normalsize, align=left] (ddc) at (4,1.5) {Data-driven \\Control methods};
 
     %\pause
 
-    \draw[->,>=stealth',semithick] (10,-0.5) arc
-    [
-        start angle=0,
-        end angle=30,
-        x radius=3.5cm,
-        y radius =3.5cm
-    ] ;
-
-    \draw[->,>=stealth',semithick] (9.2,1.7) arc
-    [
-        start angle=40,
-        end angle=130,
-        x radius=3.5cm,
-        y radius =3.5cm
-    ] ;
-
-    \draw[->,>=stealth',semithick] (3.4,1) arc
-    [
-        start angle=150,
-        end angle=182,
-        x radius=3.5cm,
-        y radius =3.5cm
-    ] ;
-
-    \draw[->,>=stealth',semithick] (3.1,-1.4) arc
-    [
-        start angle=190,
-        end angle=240,
-        x radius=3.4cm,
-        y radius =3.4cm
-    ] ;
-
-    \draw[->,>=stealth',semithick] (8,-3.7)  arc
-    [
-        start angle=295,
-        end angle=345,
-        x radius=3.4cm,
-        y radius =3.4cm
-    ] ;
+    \draw[->,>=stealth',semithick] (ra) to[bend right=25] (oc);
+    \draw[->,>=stealth',semithick] (oc) to[bend right=25] (ddc);
+    \draw[->,>=stealth',semithick] (ddc) to[bend right=25] (mpc);
+    \draw[->,>=stealth',semithick] (mpc) to[bend right=25] (reach);
+    \draw[->,>=stealth',semithick] (reach) to[bend right=25] (ra);
 
   \end{tikzpicture}
 \end{frame}
